@@ -9,6 +9,7 @@ import { RegisterUseCase } from './domains/use-cases/user/register.use-case';
 import { UsersAuthGatewayTypeorm } from './infra/gateway/user-auth/users-auth.gateway';
 import { UsersGatewayTypeorm } from './infra/gateway/user/users-gateway.typeorm';
 import { UserController } from './presentation/controllers/user.controller';
+import { FindAllBySelectUserUseCase } from './domains/use-cases/user/find-all-by-select.use-case';
 
 const GatewayProviders = [
   {
@@ -27,6 +28,7 @@ const UseCaseProviders = [
   CreateUserAuthUseCase,
   FindUserOneByUseCase,
   FindUserAuthByUseCase,
+  FindAllBySelectUserUseCase,
 ];
 
 @Module({
