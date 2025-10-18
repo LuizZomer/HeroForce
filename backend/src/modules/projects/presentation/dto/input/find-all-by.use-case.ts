@@ -23,7 +23,6 @@ export class FindAllByProjectDto {
     description: 'Tamanho da página',
     required: false,
   })
-  @IsOptional()
   @IsNumberString({}, { message: 'O tamanho da página deve ser um número' })
   pageSize: number;
 
@@ -31,7 +30,6 @@ export class FindAllByProjectDto {
     description: 'Número da página',
     required: false,
   })
-  @IsOptional()
   @IsNumberString({}, { message: 'O número da página deve ser um número' })
   page: number;
 }

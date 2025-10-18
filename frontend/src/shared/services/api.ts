@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -6,4 +7,21 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 10000,
+  withCredentials: true,
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      window.location.href = "/auth";
+      return Promise.reject(error); // sai imediatamente
+    }
+
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    }
+
+    return Promise.reject(error);
+  }
+);

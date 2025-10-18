@@ -1,9 +1,19 @@
 import { createBrowserRouter } from "react-router-dom";
 import { LoginContainer } from "./features/auth/containers/login.container";
+import { RequiredAuth } from "./shared/services/secure/RequiredAuth";
+import { ProjectsContainer } from "./features/projects/containers/projects.container";
 
 export const routes = createBrowserRouter([
   {
     path: "/auth",
     element: <LoginContainer />,
+  },
+  {
+    path: "/projects",
+    element: (
+      <RequiredAuth>
+        <ProjectsContainer />
+      </RequiredAuth>
+    ),
   },
 ]);

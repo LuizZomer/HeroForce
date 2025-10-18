@@ -1,12 +1,17 @@
+import { useAuth } from "@/shared/hooks/useAuth.hook";
 import type { LoginSchema } from "../hooks/use-login.hook";
 import { LoginForm } from "../presenters/login-form.presenter";
 import { LoginPresenter } from "../presenters/login-root.presenter";
-import { loginRequest } from "../requests/login.request";
+import { useNavigate } from "react-router-dom";
 
 export const LoginContainer = () => {
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
   const onSubmit = async (data: LoginSchema) => {
-    console.log(data);
-    await loginRequest(data);
+    await signIn(data).then(() => {
+      navigate("/projects");
+    });
   };
 
   return (

@@ -61,6 +61,26 @@ export class AuthController {
     });
   }
 
+  @Post('logout')
+  @ApiBody({
+    type: LoginDto,
+  })
+  @ApiOkResponse({
+    description: 'Logout successful',
+    example: { valid: true },
+  })
+  @HttpCode(HttpStatus.OK)
+  logout(@Res() res: Response) {
+    res.cookie('auth', '', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      expires: new Date(0),
+    });
+
+    return res.json({ valid: true });
+  }
+
   @Get('me')
   @UseGuards(JwtAuthGuard)
   validation(@Request() req: ReqWithUser) {
