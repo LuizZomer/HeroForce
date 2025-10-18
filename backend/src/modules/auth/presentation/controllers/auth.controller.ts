@@ -21,6 +21,7 @@ import { GlobalErrorInterface } from 'src/shared/types/interface/errors/global-e
 import { LoginDto } from '../dto/login.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
+import { UserResponseDto } from 'src/shared/docs/user-response.docs';
 
 @Controller('auth')
 export class AuthController {
@@ -35,12 +36,7 @@ export class AuthController {
   })
   @ApiOkResponse({
     description: 'Login successful',
-    schema: {
-      type: 'object',
-      properties: {
-        valid: { type: 'boolean' },
-      },
-    },
+    type: UserResponseDto,
   })
   @ApiUnauthorizedResponse({
     description: 'Invalid credentials',
@@ -55,12 +51,26 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return res.json({ valid: true });
+    return res.json({
+      user: {
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+      },
+    });
   }
 
-  @Get('')
+  @Get('me')
   @UseGuards(JwtAuthGuard)
-  validation() {
-    return { valid: true };
+  validation(@Request() req: ReqWithUser) {
+    return {
+      user: {
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+      },
+    };
   }
 }
