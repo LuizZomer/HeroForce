@@ -24,6 +24,7 @@ import {
 } from '@nestjs/swagger';
 import { ProjectGoalResponseDto } from '../dto/output/create-project-goal-output.dto';
 import { DeleteProjectGoalUseCase } from '../../domains/use-cases/project-goal/delete.use-case';
+import { GlobalErrorInterface } from 'src/shared/types/interface/errors/global-error.interface';
 
 @Controller('project-goal')
 export class ProjectGoalController {
@@ -110,12 +111,7 @@ export class ProjectGoalController {
   })
   @ApiBadRequestResponse({
     description: 'Meta not found',
-    schema: {
-      example: {
-        statusCode: 404,
-        message: 'Meta não encontrada',
-      },
-    },
+    type: GlobalErrorInterface,
   })
   @HttpCode(HttpStatus.OK)
   async delete(@Param('projectGoalId', ParseIntPipe) projectGoalId: number) {

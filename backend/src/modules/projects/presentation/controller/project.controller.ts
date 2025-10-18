@@ -19,13 +19,21 @@ import { Roles } from 'src/core/object-value/user-roles.enum';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
 import { Project } from 'src/core/entities/project.entity';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { UpdateProjectUseCase } from '../../domains/use-cases/project/update.use-case';
-import { FindAllByProjectUseCase } from '../../domains/use-cases/project/find-all-by.use-case';
 import { FindAllByProjectDto } from '../dto/input/find-all-by.use-case';
+import { FindAllByProjectUseCase } from '../../domains/use-cases/project/find-all-by.use-case';
+import { FindAllByUserProjectUseCase } from '../../domains/use-cases/project/find-all-by-user.use-case';
+import { FindAllByWithpaginationDto } from '../dto/output/find-all-projects-by.dto';
+import { DefaultResponseDto } from 'src/shared/docs/default-response.docs';
+import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { User } from 'src/core/entities/user.entity';
+import { FindAllProjectsByUserDto } from '../dto/output/find-all-projects-by-user.dto';
+import { FindAllByUserDto } from '../dto/input/find-all-by-user.dto';
 
 @Controller('projects')
 export class ProjectController {
@@ -33,6 +41,7 @@ export class ProjectController {
     private readonly createProjectUseCase: CreateProjectUseCase,
     private readonly updateProjectUseCase: UpdateProjectUseCase,
     private readonly findAllByProjectUseCase: FindAllByProjectUseCase,
+    private readonly findAllByUserProjectUseCase: FindAllByUserProjectUseCase,
   ) {}
 
   @Post()
@@ -83,19 +92,50 @@ export class ProjectController {
   @RolesAllowed(Roles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Find all goals by project fields' })
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     description: 'Goals found',
-    // type: ProjectGoal,
+    type: DefaultResponseDto(FindAllByWithpaginationDto),
   })
   @HttpCode(HttpStatus.OK)
-  async findAllByProject(@Query() findAllByProjectDto: FindAllByProjectDto) {
-    const goals = await this.findAllByProjectUseCase.execute({
-      ...findAllByProjectDto,
-    });
+  async findAllByProject(@Query() filters: FindAllByProjectDto) {
+    const { pageSize, page, ...where } = filters;
+    const pagination = {
+      pageSize: Number(pageSize),
+      page: Number(page),
+    };
+
+    const projects = await this.findAllByProjectUseCase.execute(
+      where,
+      pagination,
+    );
 
     return {
       statusCode: HttpStatus.OK,
-      content: goals,
+      content: projects,
+    };
+  }
+
+  @Get('user')
+  @RolesAllowed(Roles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Find all goals by project fields' })
+  @ApiCreatedResponse({
+    description: 'Goals found',
+    type: DefaultResponseDto(FindAllProjectsByUserDto),
+  })
+  @HttpCode(HttpStatus.OK)
+  async findAllByUser(
+    @GetUser() user: User,
+    @Query() pagination: FindAllByUserDto,
+  ) {
+    const projects = await this.findAllByUserProjectUseCase.execute(
+      user.id,
+      pagination,
+    );
+
+    return {
+      statusCode: HttpStatus.OK,
+      content: projects,
     };
   }
 }

@@ -18,4 +18,20 @@ export class FindAllByProjectDto {
   @IsOptional()
   @IsEnum(ProjectStatusEnum, { message: 'O status deve ser um enum' })
   status: ProjectStatusEnum;
+
+  @ApiProperty({
+    description: 'Tamanho da página',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumberString({}, { message: 'O tamanho da página deve ser um número' })
+  pageSize: number;
+
+  @ApiProperty({
+    description: 'Número da página',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumberString({}, { message: 'O número da página deve ser um número' })
+  page: number;
 }

@@ -12,6 +12,7 @@ import { UsersModule } from '../users/users.module';
 import { ProjectGoalController } from './presentation/controller/project-goal.controller';
 import { UpdateProjectGoalUseCase } from './domains/use-cases/project-goal/update.use-case';
 import { DeleteProjectGoalUseCase } from './domains/use-cases/project-goal/delete.use-case';
+import { FindAllByUserProjectUseCase } from './domains/use-cases/project/find-all-by-user.use-case';
 import { FindAllByProjectUseCase } from './domains/use-cases/project/find-all-by.use-case';
 
 const GatewayProviders = [
@@ -32,6 +33,7 @@ const UseCaseProviders = [
   UpdateProjectGoalUseCase,
   DeleteProjectGoalUseCase,
   FindAllByProjectUseCase,
+  FindAllByUserProjectUseCase,
 ];
 
 @Module({

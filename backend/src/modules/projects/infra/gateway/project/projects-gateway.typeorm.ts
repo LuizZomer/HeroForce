@@ -11,8 +11,20 @@ export class ProjectsGatewayTypeorm implements ProjectsGatewayInterface {
     private readonly projectRepository: Repository<Project>,
   ) {}
 
-  async findAllBy(where: Partial<Project>): Promise<Project[]> {
-    return this.projectRepository.find({ where });
+  async findAllBy(
+    where: Partial<Project>,
+    page = 1,
+    limit = 10,
+  ): Promise<[Project[], number]> {
+    const [data, total] = await this.projectRepository.findAndCount({
+      where,
+      relations: ['user'],
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { createdAt: 'DESC' },
+    });
+
+    return [data, total];
   }
 
   async findOneBy(where: Partial<Project>): Promise<Project | null> {

@@ -1,32 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ProjectsGatewayInterface } from 'src/modules/projects/infra/gateway/project/projects-gateway.interface';
-import { FindAllByProjectDto } from 'src/modules/projects/presentation/dto/input/find-all-by.use-case';
-import { FindAllProjectsByDto } from 'src/modules/projects/presentation/dto/output/find-all-projects-by.dto';
-import { PaginationOutput } from 'src/shared/types/paginator.output';
-import { Paginator } from 'src/shared/utils/paginator';
 import { responseMapperDto } from 'src/shared/utils/responseMapperDto';
+import { FindAllProjectsByUserDto } from 'src/modules/projects/presentation/dto/output/find-all-projects-by-user.dto';
+import { Paginator } from 'src/shared/utils/paginator';
 
 @Injectable()
-export class FindAllByProjectUseCase {
+export class FindAllByUserProjectUseCase {
   constructor(
     @Inject('ProjectsGatewayInterface')
     private readonly projectsGateway: ProjectsGatewayInterface,
   ) {}
 
   async execute(
-    where: Omit<FindAllByProjectDto, 'pageSize' | 'page'>,
+    responsibleId: number,
     pagination: { pageSize: number; page: number },
-  ): Promise<{
-    projects: FindAllProjectsByDto[];
-    pagination: PaginationOutput;
-  }> {
+  ) {
     const paginator = this.createPaginator(pagination);
-
     const { limit } = paginator.getPaginationForFilter();
     const pageNumber = paginator.getCurrentPage();
 
     const [projects, total] = await this.projectsGateway.findAllBy(
-      where,
+      { responsibleId },
       pageNumber,
       limit,
     );
@@ -34,9 +28,9 @@ export class FindAllByProjectUseCase {
     paginator.setTotalItems(total);
 
     const mappedProjects = responseMapperDto(
-      FindAllProjectsByDto,
+      FindAllProjectsByUserDto,
       projects,
-    ) as FindAllProjectsByDto[];
+    ) as FindAllProjectsByUserDto[];
 
     return {
       projects: mappedProjects,
