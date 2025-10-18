@@ -16,20 +16,23 @@ export class Project {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ name: 'name', type: 'varchar', length: 255 })
   name: string;
 
-  @Column()
+  @Column({ name: 'description', type: 'varchar', length: 255 })
   description: string;
 
-  @Column({ type: 'enum', enum: ProjectStatusEnum })
+  @Column({ name: 'status', type: 'enum', enum: ProjectStatusEnum })
   status: ProjectStatusEnum;
 
-  @CreateDateColumn()
+  @Column({ name: 'responsible_id', type: 'int' })
+  responsibleId: number;
+
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'responsible_id' })
   user: User;
 
   @OneToMany(() => ProjectGoal, (goal) => goal.project, { cascade: true })

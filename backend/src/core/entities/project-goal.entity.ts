@@ -13,20 +13,23 @@ export class ProjectGoal {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'enum', enum: GoalType })
+  @Column({ name: 'type', type: 'enum', enum: GoalType })
   type: GoalType;
 
-  @Column({ type: 'int' })
+  @Column({ name: 'target_value', type: 'int' })
   targetValue: number;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ name: 'current_value', type: 'int', default: 0 })
   currentValue: number;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ name: 'deadline', type: 'timestamp', nullable: true })
   deadline: Date;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ name: 'achieved', type: 'boolean', default: false })
   achieved: boolean;
+
+  @Column({ name: 'project_id', type: 'int' })
+  projectId: number;
 
   @ManyToOne(() => Project, (project) => project.goals)
   @JoinColumn({ name: 'project_id' })

@@ -23,8 +23,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('ClinicFlow API')
-    .setDescription('ClinicFlow API documentation')
+    .setTitle('HeroForce API')
+    .setDescription('HeroForce API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

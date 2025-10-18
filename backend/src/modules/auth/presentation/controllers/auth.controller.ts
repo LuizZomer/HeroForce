@@ -27,7 +27,7 @@ export class AuthController {
   constructor(private readonly jwtAuthUseCase: JwtAuthUseCase) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('login')
+  @Post()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login' })
   @ApiBody({
@@ -38,7 +38,7 @@ export class AuthController {
     schema: {
       type: 'object',
       properties: {
-        access_token: { type: 'string' },
+        valid: { type: 'boolean' },
       },
     },
   })
@@ -55,10 +55,10 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return res.json(token);
+    return res.json({ valid: true });
   }
 
-  @Get('validation')
+  @Get('')
   @UseGuards(JwtAuthGuard)
   validation() {
     return { valid: true };

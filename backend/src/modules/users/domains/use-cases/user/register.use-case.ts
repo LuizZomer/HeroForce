@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { UserAuth } from 'src/core/entities/user-auth.entity';
 import { User } from 'src/core/entities/user.entity';
 import { Roles } from 'src/core/object-value/user-roles.enum';
@@ -10,6 +15,8 @@ import { HashUtil } from 'src/shared/utils/Hash.util';
 
 @Injectable()
 export class RegisterUseCase {
+  private readonly logger = new Logger(RegisterUseCase.name);
+
   constructor(
     @Inject('UsersGatewayInterface')
     private readonly usersGateway: UsersGatewayInterface,
@@ -20,16 +27,27 @@ export class RegisterUseCase {
     dto: CreateUserDto,
     role: Roles,
   ): Promise<RegisterResponseDto['content']> {
+    await this.validateUser(dto.email);
+
     const userCreated = await this.usersGateway.create({
       ...dto,
       role,
     });
 
-    const password = 'Teste';
-
-    await this.createUserAuth(password, userCreated);
+    await this.createUserAuth(dto.password, userCreated);
 
     return this.outputMapper(userCreated);
+  }
+
+  private async validateUser(email: string) {
+    const user = await this.usersGateway.findOneBy({ email });
+    if (user) {
+      this.logger.warn(
+        `Tentativa de cadastro com email já existente: ${email}`,
+      );
+
+      throw new BadRequestException('Não foi possível processar o cadastro');
+    }
   }
 
   async createUserAuth(password: string, userCreated: User) {
