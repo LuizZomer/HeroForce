@@ -38,7 +38,7 @@ Inicie o container:
 docker-compose up --build
 ```
 
-ou 
+ou
 
 ```
 docker-compose up -d --build # Para não prender o terminal
@@ -82,7 +82,7 @@ docker exec -it <nome_ou_id_do_container> npm run seed
 
 💡 Esse comando popula o banco de dados com dados iniciais para facilitar os testes.
 
-### 5️⃣ Configurar .env do frontend 
+### 5️⃣ Configurar .env do frontend
 
 Agora vá até a pasta do frontend e crie a .env com base na .env.example:
 
@@ -107,10 +107,12 @@ docker-compose up --build
 ### Credenciais da seed
 
 #### Admin (Pode fazer as operações de criar, editar e filtrar por responsável)
+
 - Email: admin@hero.com
 - Senha: admin123
 
 #### User padrão (Pode apenas visualizar as tarefas)
+
 - Email: player@hero.com
 - Senha: player123
 
@@ -120,3 +122,4 @@ Você pode visualizar a documentação da api em lugares:
 
 - Swagger(Com a aplicação backend rodando): http://localhost:3000/api/docs
 - Postman: https://documenter.getpostman.com/view/34048515/2sB3QQK8K5
+- 📘 [Regras de Negócio — Relação Project e ProjectGoal](docs/project-goal-business-rules.md)
