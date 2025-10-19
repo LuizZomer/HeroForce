@@ -1,5 +1,5 @@
 import { meRequest } from "@/features/auth/requests/me.request";
-import { useAuth } from "@/shared/hooks/useAuth.hook";
+import { useAuth } from "@/shared/hooks/use-auth.hook";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
