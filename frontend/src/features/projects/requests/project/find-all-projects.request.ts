@@ -3,10 +3,13 @@ import { ProjectStatusEnum } from "@/shared/types/project-status.enum";
 import { IProject } from "@/shared/types/projects.type";
 
 export interface IFindAllProjectsFilters {
-  pageSize?: number;
-  page?: number;
   responsibleId?: number;
   status?: ProjectStatusEnum;
+}
+
+export interface FiltersWithPagination extends IFindAllProjectsFilters {
+  pageSize?: number;
+  page?: number;
 }
 
 export interface IFindAllProjectsResponse {
@@ -15,12 +18,12 @@ export interface IFindAllProjectsResponse {
 }
 
 export const findAllProjectsRequest = async (
-  filters: IFindAllProjectsFilters
+  filters: FiltersWithPagination
 ): Promise<IFindAllProjectsResponse> => {
   const res = await api.get("/projects", {
     params: {
       ...filters,
-      pageSize: filters.pageSize || 2,
+      pageSize: filters.pageSize || 6,
       page: filters.page || 1,
     },
   });

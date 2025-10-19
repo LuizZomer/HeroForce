@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   findAllProjectsRequest,
-  IFindAllProjectsFilters,
-} from "../requests/find-all-projects.request";
+  FiltersWithPagination,
+} from "../requests/project/find-all-projects.request";
 
-export const useFetchProjects = (filters: IFindAllProjectsFilters) => {
+export const useFetchProjects = (filters: FiltersWithPagination) => {
   return useQuery({
-    queryKey: ["projects"],
+    queryKey: ["projects", filters.page],
     queryFn: async () => findAllProjectsRequest(filters),
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,

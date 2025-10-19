@@ -1,4 +1,5 @@
 import { IProject } from "@/shared/types/projects.type";
+import { ProjectCard } from "../components/card/project-card.card";
 
 interface IProjectsListPresenterProps {
   projects: IProject[];
@@ -8,10 +9,10 @@ export const ProjectsListPresenter = ({
   projects,
 }: IProjectsListPresenterProps) => {
   return (
-    <ul>
+    <>
       {projects.map((project) => (
-        <li key={project.id}>{project.name}</li>
+        <ProjectCard key={project.id} project={project} />
       ))}
-    </ul>
+    </>
   );
 };
