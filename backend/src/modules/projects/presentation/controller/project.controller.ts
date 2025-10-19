@@ -11,11 +11,6 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreateProjectDto } from '../dto/input/create-project.dto';
-import { CreateProjectUseCase } from '../../domains/use-cases/project/create.use-case';
-import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
-import { RolesAllowed } from 'src/shared/decorators/roles.decorator';
-import { Roles } from 'src/core/object-value/user-roles.enum';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -23,17 +18,17 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { Project } from 'src/core/entities/project.entity';
-import { RolesGuard } from 'src/shared/guards/roles.guard';
-import { UpdateProjectUseCase } from '../../domains/use-cases/project/update.use-case';
-import { FindAllByProjectDto } from '../dto/input/find-all-by.use-case';
-import { FindAllByProjectUseCase } from '../../domains/use-cases/project/find-all-by.use-case';
-import { FindAllByUserProjectUseCase } from '../../domains/use-cases/project/find-all-by-user.use-case';
-import { FindAllByWithpaginationDto } from '../dto/output/find-all-projects-by.dto';
+import { Roles } from 'src/core/object-value/user-roles.enum';
+import { RolesAllowed } from 'src/shared/decorators/roles.decorator';
 import { DefaultResponseDto } from 'src/shared/docs/default-response.docs';
-import { GetUser } from 'src/shared/decorators/get-user.decorator';
-import { User } from 'src/core/entities/user.entity';
-import { FindAllProjectsByUserDto } from '../dto/output/find-all-projects-by-user.dto';
-import { FindAllByUserDto } from '../dto/input/find-all-by-user.dto';
+import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/shared/guards/roles.guard';
+import { CreateProjectUseCase } from '../../domains/use-cases/project/create-project.use-case';
+import { FindAllByProjectUseCase } from '../../domains/use-cases/project/find-all-by-project.use-case';
+import { UpdateProjectUseCase } from '../../domains/use-cases/project/update-project.use-case';
+import { CreateProjectDto } from '../dto/input/create-project.dto';
+import { FindAllByProjectDto } from '../dto/input/find-all-by.use-case';
+import { FindAllByWithpaginationDto } from '../dto/output/find-all-projects-by.dto';
 
 @Controller('projects')
 export class ProjectController {
@@ -41,7 +36,6 @@ export class ProjectController {
     private readonly createProjectUseCase: CreateProjectUseCase,
     private readonly updateProjectUseCase: UpdateProjectUseCase,
     private readonly findAllByProjectUseCase: FindAllByProjectUseCase,
-    private readonly findAllByUserProjectUseCase: FindAllByUserProjectUseCase,
   ) {}
 
   @Post()
@@ -105,30 +99,6 @@ export class ProjectController {
 
     const projects = await this.findAllByProjectUseCase.execute(
       where,
-      pagination,
-    );
-
-    return {
-      statusCode: HttpStatus.OK,
-      content: projects,
-    };
-  }
-
-  @Get('user')
-  @RolesAllowed(Roles.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiOperation({ summary: 'Find all goals by project fields' })
-  @ApiCreatedResponse({
-    description: 'Goals found',
-    type: DefaultResponseDto(FindAllProjectsByUserDto),
-  })
-  @HttpCode(HttpStatus.OK)
-  async findAllByUser(
-    @GetUser() user: User,
-    @Query() pagination: FindAllByUserDto,
-  ) {
-    const projects = await this.findAllByUserProjectUseCase.execute(
-      user.id,
       pagination,
     );
 

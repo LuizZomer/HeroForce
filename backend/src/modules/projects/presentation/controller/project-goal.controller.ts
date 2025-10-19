@@ -10,9 +10,9 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { CreateProjectGoalUseCase } from '../../domains/use-cases/project-goal/create.use-case';
+import { CreateProjectGoalUseCase } from '../../domains/use-cases/project-goal/create-project-goal.use-case';
 import { CreateProjectGoalDto } from '../dto/input/create-project-goal.dto';
-import { UpdateProjectGoalUseCase } from '../../domains/use-cases/project-goal/update.use-case';
+import { UpdateProjectGoalUseCase } from '../../domains/use-cases/project-goal/update-project-goal.use-case';
 import { RolesAllowed } from 'src/shared/decorators/roles.decorator';
 import { Roles } from 'src/core/object-value/user-roles.enum';
 import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
@@ -23,7 +23,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { ProjectGoalResponseDto } from '../dto/output/create-project-goal-output.dto';
-import { DeleteProjectGoalUseCase } from '../../domains/use-cases/project-goal/delete.use-case';
+import { DeleteProjectGoalUseCase } from '../../domains/use-cases/project-goal/delete-project-goal.use-case';
 import { GlobalErrorInterface } from 'src/shared/types/interface/errors/global-error.interface';
 
 @Controller('project-goal')

@@ -4,6 +4,8 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
+import { GlobalExceptionFilter } from './shared/exceptions/global-exceptions.filter';
+import { ValidationInterceptor } from './shared/interceptons/validation.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +17,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.setGlobalPrefix('api');
+  app.useGlobalFilters(new GlobalExceptionFilter());
+  app.useGlobalInterceptors(new ValidationInterceptor());
 
   app.enableCors({
     origin: 'http://localhost:5173',

@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from 'src/shared/types/interface/jwtPayload.interface';
-import { FindUserOneByUseCase } from 'src/modules/users/domains/use-cases/user/find-one-by-id.use-case';
+import { FindUserOneByUseCase } from 'src/modules/users/domains/use-cases/user/find-one-user-by-id.use-case';
 import { cookieExtractor } from 'src/shared/utils/cookieExtractor';
 
 @Injectable()

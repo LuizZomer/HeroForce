@@ -6,7 +6,7 @@ import { CreateProjectGoalDto } from 'src/modules/projects/presentation/dto/inpu
 import { CreateProjectDto } from 'src/modules/projects/presentation/dto/input/create-project.dto';
 import { ProjectGoalResponseDto } from 'src/modules/projects/presentation/dto/output/create-project-goal-output.dto';
 import { CreateProjectOutputDto } from 'src/modules/projects/presentation/dto/output/create-project-output.dto';
-import { FindUserOneByUseCase } from 'src/modules/users/domains/use-cases/user/find-one-by-id.use-case';
+import { FindUserOneByUseCase } from 'src/modules/users/domains/use-cases/user/find-one-user-by-id.use-case';
 import { responseMapperDto } from 'src/shared/utils/responseMapperDto';
 
 export class CreateProjectUseCase {

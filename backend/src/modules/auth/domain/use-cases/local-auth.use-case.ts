@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FindUserAuthByUseCase } from 'src/modules/users/domains/use-cases/user-auth/find-user-auth-by.use-case';
-import { FindUserOneByUseCase } from 'src/modules/users/domains/use-cases/user/find-one-by-id.use-case';
+import { FindUserOneByUseCase } from 'src/modules/users/domains/use-cases/user/find-one-user-by-id.use-case';
 import { HashUtil } from 'src/shared/utils/Hash.util';
 
 @Injectable()

@@ -18,7 +18,7 @@ import { RolesAllowed } from 'src/shared/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { GlobalErrorInterface } from 'src/shared/types/interface/errors/global-error.interface';
-import { FindAllBySelectUserUseCase } from '../../domains/use-cases/user/find-all-by-select.use-case';
+import { FindAllBySelectUserUseCase } from '../../domains/use-cases/user/find-all-users-by-select.use-case';
 import { RegisterUseCase } from '../../domains/use-cases/user/register.use-case';
 import { CreateUserDto } from '../dto/input/create-user.dto';
 import { RegisterResponseDto } from '../dto/output/register-response.dto';
