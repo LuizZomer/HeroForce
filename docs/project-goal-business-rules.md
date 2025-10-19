@@ -1,4 +1,4 @@
-# 📘 Relação entre Project e ProjectGoal
+# 📘 Relação entre Projeto e Meta de projeto
 
 Este documento descreve as **regras de negócio** e a **lógica de domínio** que regem a relação entre as entidades `Project` e `ProjectGoal`.
 
