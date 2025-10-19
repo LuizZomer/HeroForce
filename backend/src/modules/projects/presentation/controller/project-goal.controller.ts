@@ -42,6 +42,10 @@ export class ProjectGoalController {
     description: 'Project goal created',
     type: ProjectGoalResponseDto,
   })
+  @ApiBadRequestResponse({
+    description: 'Project goal deadline is less than the current date',
+    type: GlobalErrorInterface,
+  })
   async create(
     @Body() createProjectGoalDto: CreateProjectGoalDto,
     @Param('projectId', ParseIntPipe) projectId: number,

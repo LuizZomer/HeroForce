@@ -7,4 +7,7 @@ export class GlobalErrorInterface {
 
   @ApiProperty({ example: 'Bad Request' })
   message: string;
+
+  @ApiProperty({ example: 'Bad Request' })
+  error: string;
 }
