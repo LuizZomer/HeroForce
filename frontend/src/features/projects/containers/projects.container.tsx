@@ -2,12 +2,16 @@ import { useFetchProjects } from "../hooks/use-fetch-projects.hook";
 import { ProjectsListPresenter } from "../presenters/projects-list.presenter";
 import { ProjectsRootPresenter } from "../presenters/projects-root.presenter";
 import { PaginationAdapter } from "@/shared/components/pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const ProjectsContainer = () => {
   const [page, setPage] = useState(1);
 
   const { data, isPending, refetch } = useFetchProjects({ page });
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
 
   return (
     <ProjectsRootPresenter
@@ -20,7 +24,6 @@ export const ProjectsContainer = () => {
         totalPages={data?.pagination.totalPages || 1}
         onPageChange={(page) => {
           setPage(page);
-          refetch();
         }}
       />
     </ProjectsRootPresenter>

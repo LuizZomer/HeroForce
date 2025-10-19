@@ -1,4 +1,4 @@
-import { useAuth } from "@/shared/hooks/useAuth.hook";
+import { useAuth } from "@/shared/hooks/use-auth.hook";
 import type { LoginSchema } from "../hooks/use-login.hook";
 import { LoginForm } from "../presenters/login-form.presenter";
 import { LoginPresenter } from "../presenters/login-root.presenter";

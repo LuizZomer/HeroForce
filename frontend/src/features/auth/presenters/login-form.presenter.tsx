@@ -19,7 +19,10 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
 
   return (
     <Form {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 max-w-[300px] w-full"
+      >
         <FormField
           name="email"
           control={methods.control}
@@ -27,7 +30,12 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} type="email" placeholder="Insira seu email" />
+                <Input
+                  {...field}
+                  type="email"
+                  placeholder="Insira seu email"
+                  className="w-full"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -39,7 +47,7 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
           control={methods.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Senha</FormLabel>
               <FormControl>
                 <Input
                   {...field}
