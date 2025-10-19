@@ -68,13 +68,17 @@ Mesmo que você altere as variáveis de ambiente (DB_USERNAME, DB_PASSWORD, DB_D
 
 ### 4️⃣ Rodar a Seed do Banco de Dados
 
-Com o container do backend em execução, abra outro terminal e rode:
+1. Liste os containers ativos para achar o nome ou ID do container:
 
 ```
-npm run seed
+docker ps
 ```
 
+2. Rodar a seed dentro do container diretamente:
 
+```
+docker exec -it <nome_ou_id_do_container> npm run seed
+```
 
 💡 Esse comando popula o banco de dados com dados iniciais para facilitar os testes.
 
