@@ -1,27 +1,30 @@
 import { meRequest } from "@/features/auth/requests/me.request";
+import { FullScreenSpinner } from "@/shared/components/Loader/FullScreenSpinner.loader";
 import { useAuth } from "@/shared/hooks/use-auth.hook";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const RequiredAuth = ({ children }: { children: React.ReactNode }) => {
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const validateToken = async () => {
-    await meRequest()
-      .then((user) => {
-        setUser(user);
-      })
-      .catch(() => {
-        navigate("/auth");
-      });
+    setLoading(true);
+    try {
+      const user = await meRequest();
+      setUser(user);
+    } catch {
+      setUser(null);
+      navigate("/auth");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (!user) {
-      validateToken();
-    }
-  }, [user]);
+    validateToken();
+  }, []);
 
-  return <>{children}</>;
+  return loading ? <FullScreenSpinner /> : <>{children}</>;
 };

@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { LoginContainer } from "./features/auth/containers/login.container";
 import { RequiredAuth } from "./shared/services/secure/RequiredAuth";
 import { ProjectsContainer } from "./features/projects/containers/projects.container";
+import { RegisterContainer } from "./features/register/containers/register.container";
 
 export const routes = createBrowserRouter([
   {
@@ -15,5 +16,9 @@ export const routes = createBrowserRouter([
         <ProjectsContainer />
       </RequiredAuth>
     ),
+  },
+  {
+    path: "/register",
+    element: <RegisterContainer />,
   },
 ]);

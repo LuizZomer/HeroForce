@@ -14,8 +14,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      window.location.href = "/auth";
-      return Promise.reject(error); // sai imediatamente
+      if (window.location.pathname !== "/auth") {
+        window.location.href = "/auth";
+      }
     }
 
     if (error.response?.data?.message) {

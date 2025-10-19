@@ -16,6 +16,7 @@ import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { CreateProjectGoalDialog } from "../dialog/create-project-goal.dialog";
 import { EditProjectDialog } from "../dialog/edit-project.dialog";
 import { EditProjectGoalDialog } from "../dialog/edit-project-goal.dialog";
+import { ValidateRole } from "@/shared/services/secure/ValidateRole";
 
 export const ProjectCard = ({ project }: { project: IProject }) => {
   return (
@@ -30,13 +31,15 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
         <CardDescription className="line-clamp-2">
           {project.description}
         </CardDescription>
-        <EditProjectDialog
-          project={{
-            ...project,
-            id: project.id,
-            responsibleId: String(project.user.id),
-          }}
-        />
+        <ValidateRole>
+          <EditProjectDialog
+            project={{
+              ...project,
+              id: project.id,
+              responsibleId: String(project.user.id),
+            }}
+          />
+        </ValidateRole>
       </CardHeader>
       <CardContent className="">
         <ScrollArea className="h-[7rem] flex flex-col gap-2">
@@ -59,7 +62,9 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
                   <Target className="h-4 w-4" />
                   <span>Metas ({project.goals.length})</span>
                 </div>
-                <CreateProjectGoalDialog projectId={project.id} />
+                <ValidateRole>
+                  <CreateProjectGoalDialog projectId={project.id} />
+                </ValidateRole>
               </div>
               {project.goals.length > 0 && (
                 <div className="">
@@ -73,7 +78,9 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
                           <span className="text-muted-foreground capitalize">
                             {goal.type}
                           </span>
-                          <EditProjectGoalDialog projectGoal={{ ...goal }} />
+                          <ValidateRole>
+                            <EditProjectGoalDialog projectGoal={{ ...goal }} />
+                          </ValidateRole>
                         </div>
                         <Badge
                           variant={goal.achieved ? "default" : "outline"}

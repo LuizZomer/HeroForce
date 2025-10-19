@@ -1,78 +1,73 @@
 import { PaginationAdapter } from "@/shared/components/pagination";
+import { Button } from "@/shared/components/ui/button";
+import { useAuth } from "@/shared/hooks/use-auth.hook";
 import { useResponsiblesForSelect } from "@/shared/hooks/use-responsible-for-select.hook";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
+import { CreateProjectDialog } from "../components/dialog/create-project.dialog";
 import { useFetchProjects } from "../hooks/use-fetch-projects.hook";
+import { ProjectHeaderPresenter } from "../presenters/project-header.presenter";
 import { ProjectsListFiltersPresenter } from "../presenters/projects-list-filters.presenter";
 import { ProjectsListPresenter } from "../presenters/projects-list.presenter";
 import { ProjectsRootPresenter } from "../presenters/projects-root.presenter";
-import { IFindAllProjectsFilters } from "../requests/project/find-all-projects.request";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ValidateRole } from "@/shared/services/secure/ValidateRole";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProjectStatusEnum } from "@/shared/types/project-status.enum";
-import { ProjectHeaderPresenter } from "../presenters/project-header.presenter";
-import { CreateProjectDialog } from "../components/dialog/create-project.dialog";
-import { useAuth } from "@/shared/hooks/use-auth.hook";
-import { Button } from "@/shared/components/ui/button";
 
 export const ProjectsContainer = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
+  const { user } = useAuth();
   const { signOut } = useAuth();
 
-  const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState<IFindAllProjectsFilters>({
-    responsibleId: undefined,
-    status: undefined,
+  const page = Number(searchParams.get("page") || 1);
+  const status = searchParams.get("status") || undefined;
+  const responsibleId =
+    user?.role === "ADMIN"
+      ? searchParams.get("responsibleId") || undefined
+      : user?.id;
+
+  const { data, isPending, refetch } = useFetchProjects({
+    page,
+    status: status as ProjectStatusEnum,
+    responsibleId: responsibleId ? Number(responsibleId) : undefined,
   });
-
-  const queryParams = useMemo(
-    () => ({
-      page,
-      responsibleId: filters.responsibleId,
-      status: filters.status,
-    }),
-    [page, filters]
-  );
-
-  const { data, isPending, refetch } = useFetchProjects(queryParams);
 
   const { data: responsiblesForSelect } = useResponsiblesForSelect();
 
-  const handleFilterChange = (
-    filter: "status" | "responsibleId",
-    value: string | undefined
-  ) => {
-    setFilters({ ...filters, [filter]: value });
+  const handleFilter = (filters: {
+    status?: string;
+    responsibleId?: string;
+  }) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    if (filters.status) newParams.set("status", filters.status);
+    else newParams.delete("status");
+
+    if (filters.responsibleId)
+      newParams.set("responsibleId", filters.responsibleId);
+    else newParams.delete("responsibleId");
+
+    newParams.set("page", "1");
+
+    setSearchParams(newParams);
   };
 
-  const handleFilterSubmit = useCallback(() => {
-    navigate({
-      search: `?page=${page}&responsibleId=${
-        filters.responsibleId || ""
-      }&status=${filters.status || ""}`,
-    });
-  }, [filters, page]);
+  const handlePageChange = (newPage: number) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("page", newPage.toString());
+    setSearchParams(newParams);
+  };
+
+  const logout = () => {
+    signOut();
+    navigate("/auth");
+  };
 
   useEffect(() => {
     if (page !== 1) {
       refetch();
     }
   }, [page, refetch]);
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-
-    const responsibleId = queryParams.get("responsibleId");
-    const status = queryParams.get("status");
-
-    const newFilters = {
-      responsibleId: responsibleId ? Number(responsibleId) : undefined,
-      status: status as ProjectStatusEnum,
-    };
-
-    setFilters(newFilters);
-
-    refetch();
-  }, [location.search]);
 
   return (
     <ProjectsRootPresenter
@@ -91,7 +86,7 @@ export const ProjectsContainer = () => {
                 </p>
               </div>
               <div>
-                <Button variant="destructive" onClick={signOut}>
+                <Button variant="destructive" onClick={logout}>
                   Logout
                 </Button>
               </div>
@@ -99,14 +94,19 @@ export const ProjectsContainer = () => {
 
             <div className="flex items-center justify-between">
               <ProjectsListFiltersPresenter
-                filters={filters}
                 responsibles={responsiblesForSelect || []}
-                onFilterChange={handleFilterChange}
-                onFilter={handleFilterSubmit}
+                onFilter={handleFilter}
+                isAdmin={user?.role === "ADMIN"}
+                defaultValue={{
+                  status: status || "",
+                  responsibleId: responsibleId ? String(responsibleId) : "",
+                }}
               />
-              <CreateProjectDialog
-                responsiblesForSelect={responsiblesForSelect || []}
-              />
+              <ValidateRole>
+                <CreateProjectDialog
+                  responsiblesForSelect={responsiblesForSelect || []}
+                />
+              </ValidateRole>
             </div>
           </div>
         </ProjectHeaderPresenter>
@@ -122,7 +122,7 @@ export const ProjectsContainer = () => {
           page={page}
           totalPages={data?.pagination.totalPages || 1}
           onPageChange={(page) => {
-            setPage(page);
+            handlePageChange(page);
           }}
         />
       </>

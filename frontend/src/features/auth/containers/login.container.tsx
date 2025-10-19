@@ -1,22 +1,28 @@
 import { useAuth } from "@/shared/hooks/use-auth.hook";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import type { LoginSchema } from "../hooks/use-login.hook";
 import { LoginForm } from "../presenters/login-form.presenter";
 import { LoginPresenter } from "../presenters/login-root.presenter";
-import { useNavigate } from "react-router-dom";
 
 export const LoginContainer = () => {
   const { signIn } = useAuth();
   const navigate = useNavigate();
 
-  const onSubmit = async (data: LoginSchema) => {
-    await signIn(data).then(() => {
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: signIn,
+    onSuccess: () => {
       navigate("/projects");
-    });
+    },
+  });
+
+  const onSubmit = async (data: LoginSchema) => {
+    await mutateAsync(data);
   };
 
   return (
     <LoginPresenter>
-      <LoginForm onSubmit={onSubmit} />
+      <LoginForm onSubmit={onSubmit} isLoading={isPending} />
     </LoginPresenter>
   );
 };

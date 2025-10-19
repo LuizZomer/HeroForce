@@ -14,9 +14,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signOut = async () => {
-    await logoutRequest().then(() => {
-      setUser(null);
-    });
+    await logoutRequest();
+    setUser(null);
   };
 
   return (
