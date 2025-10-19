@@ -51,6 +51,40 @@ Padrão adotado: **Container-Presenter Pattern** + **Feature-Based Folder Struct
 - Uso extensivo de **Shadcn UI** e **TailwindCSS** garante **acessibilidade** e **design consistente**.
 - O projeto é **totalmente tipado** com **TypeScript**, aumentando a segurança e previsibilidade.
 
+## Telas
+
+### Login
+
+![tela de login](../docs/screen-images/login.png)
+
+### Register
+
+![tela de login](../docs/screen-images/register.png)
+
+### Home do admin
+
+O admin pode ver os botões de criar e editar, além de poder filtrar por responsável
+
+![tela de login](../docs/screen-images/home-admin.png)
+
+### Home do usuário
+
+![tela de login](../docs/screen-images/home-player.png)
+
+### Criar projeto sem metricas
+
+![tela de login](../docs/screen-images/create-project.png)
+
+### Criar projeto com metricas
+
+As metas são dinamicas, podendo um projeto ter varias métricas com varios tipos ou o mesmo tipo.
+
+![tela de login](../docs/screen-images/create-project-with-goal.png)
+
+### Criar meta individual para o projeto
+
+![tela de login](../docs/screen-images/create-project-goal.png)
+
 ---
 
 📅 Última atualização: 19/10/2025
