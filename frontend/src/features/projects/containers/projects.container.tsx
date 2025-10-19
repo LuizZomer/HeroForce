@@ -56,14 +56,25 @@ export const ProjectsContainer = () => {
 
     newParams.set("page", "1");
 
-    console.log("updatedFilters", updatedFilters);
-
     setSearchParams(newParams);
     setFilters({
       status: updatedFilters.status as ProjectStatusEnum,
       responsibleId: updatedFilters.responsibleId
         ? Number(updatedFilters.responsibleId)
         : undefined,
+    });
+  };
+
+  const handleClearFilters = () => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.delete("status");
+    newParams.delete("responsibleId");
+    newParams.set("page", "1");
+
+    setSearchParams(newParams);
+    setFilters({
+      status: undefined,
+      responsibleId: undefined,
     });
   };
 
@@ -91,12 +102,12 @@ export const ProjectsContainer = () => {
       header={
         <ProjectHeaderPresenter>
           <div className="flex flex-col gap-4 w-full">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row items-center justify-between ">
               <div className="mb-4">
-                <h1 className="text-4xl font-bold mb-2">
+                <h1 className="text-4xl text-center md:text-left font-bold mb-2">
                   Gerenciamento de Projetos
                 </h1>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-center md:text-left">
                   Visualize e gerencie todos os seus projetos em um só lugar
                 </p>
               </div>
@@ -107,7 +118,7 @@ export const ProjectsContainer = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <ProjectsListFiltersPresenter
                 responsibles={responsiblesForSelect || []}
                 onFilter={handleFilter}
@@ -117,6 +128,7 @@ export const ProjectsContainer = () => {
                     ? String(filters.responsibleId)
                     : "",
                 }}
+                clearFilters={handleClearFilters}
               />
               <ValidateRole>
                 <CreateProjectDialog
@@ -128,7 +140,7 @@ export const ProjectsContainer = () => {
         </ProjectHeaderPresenter>
       }
     >
-      <main>
+      <main className="flex flex-col gap-4">
         <section className="min-h-[calc(100vh-20rem)]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <ProjectsListPresenter projects={data?.projects || []} />

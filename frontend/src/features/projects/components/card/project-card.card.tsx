@@ -17,13 +17,18 @@ import { CreateProjectGoalDialog } from "../dialog/create-project-goal.dialog";
 import { EditProjectDialog } from "../dialog/edit-project.dialog";
 import { EditProjectGoalDialog } from "../dialog/edit-project-goal.dialog";
 import { ValidateRole } from "@/shared/services/secure/ValidateRole";
+import { goalTypeLabels } from "../../constants/goal-type.constant";
+import { ProjectGoalTypeEnum } from "@/shared/types/project-goal-type.enum";
+import { slideStringForTruncate } from "@/shared/utils/slide-string-for-truncate";
 
 export const ProjectCard = ({ project }: { project: IProject }) => {
   return (
-    <Card key={project.id} className="flex flex-col h-[18rem]">
+    <Card key={project.id} className="flex flex-col lg:h-[18rem]">
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-lg">{project.name}</CardTitle>
+          <CardTitle className="text-lg">
+            {slideStringForTruncate(project.name, 30)}
+          </CardTitle>
           <div className="flex flex-col items-center gap-2">
             <h2 className="font-semibold">
               {project.totalProgress.toFixed(0)}%
@@ -81,7 +86,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
                       >
                         <div className="flex items-center gap-2">
                           <span className="text-muted-foreground capitalize">
-                            {goal.type}
+                            {goalTypeLabels[goal.type as ProjectGoalTypeEnum]}
                           </span>
                           <ValidateRole>
                             <EditProjectGoalDialog projectGoal={{ ...goal }} />

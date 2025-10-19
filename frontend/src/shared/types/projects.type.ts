@@ -1,9 +1,9 @@
-import { GoalType } from "./goal-type";
+import { ProjectGoalTypeEnum } from "./project-goal-type.enum";
 import { ProjectStatusEnum } from "./project-status.enum";
 
 export interface IProjectGoal {
   id: number;
-  type: GoalType;
+  type: ProjectGoalTypeEnum;
   targetValue: string;
   currentValue: string;
   deadline: string;

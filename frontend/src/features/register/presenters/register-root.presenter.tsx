@@ -5,8 +5,8 @@ interface LoginPresenterProps {
 }
 
 export const RegisterPresenter = ({ children }: LoginPresenterProps) => (
-  <div className="flex w-full">
-    <div className="w-[60%] flex justify-center">
+  <div className="flex w-full justify-center">
+    <div className="w-full lg:w-[60%] flex justify-center">
       <div className="h-screen w-full flex items-center justify-center">
         <div className="flex flex-col gap-4 w-full items-center justify-center">
           <h3 className="text-4xl font-bold">Hero Force</h3>
@@ -14,7 +14,7 @@ export const RegisterPresenter = ({ children }: LoginPresenterProps) => (
         </div>
       </div>
     </div>
-    <div className="w-full">
+    <div className="w-full hidden lg:block">
       <img
         src={loginBanner}
         alt="Login Banner"

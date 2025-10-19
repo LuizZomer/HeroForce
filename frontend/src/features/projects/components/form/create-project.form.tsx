@@ -19,7 +19,7 @@ import { IForSelectList } from "@/shared/types/for-select-list";
 import { useFieldArray } from "react-hook-form";
 import { goalTypeOptions } from "../../constants/goal-type.constant";
 import { Button } from "@/shared/components/ui/button";
-import { GoalType } from "@/shared/types/goal-type";
+import { ProjectGoalTypeEnum } from "@/shared/types/project-goal-type.enum";
 import {
   IProjectForm,
   useProjectForm,
@@ -216,7 +216,7 @@ export const CreateProjectForm = ({
                 currentValue: "0",
                 targetValue: "0",
                 deadline: "",
-                type: GoalType.AGILITY,
+                type: ProjectGoalTypeEnum.AGILITY,
               })
             }
           >

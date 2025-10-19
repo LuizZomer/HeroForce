@@ -1,4 +1,4 @@
-export enum GoalType {
+export enum ProjectGoalTypeEnum {
   AGILITY = "agility",
   ENCHANTMENT = "enchantment",
   EFFICIENCY = "efficiency",

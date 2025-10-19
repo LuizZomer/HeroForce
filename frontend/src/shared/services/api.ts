@@ -13,14 +13,15 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log(error);
     if (error.response?.status === 401) {
       if (window.location.pathname !== "/auth") {
         window.location.href = "/auth";
       }
     }
 
-    if (error.response?.data?.message) {
-      toast.error(error.response.data.message);
+    if (error.response?.data?.error?.message) {
+      toast.error(error.response.data.error.message);
     }
 
     return Promise.reject(error);

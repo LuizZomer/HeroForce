@@ -18,7 +18,11 @@ export const ProjectsRootPresenter = ({
   return (
     <div className="flex flex-col gap-4 p-8">
       {header}
-      {isLoading && <Spinner className="size-8" />}
+      {isLoading && (
+        <main className="flex items-center justify-center h-[calc(100vh-20rem)] w-full">
+          <Spinner className="size-8" />
+        </main>
+      )}
       {!isLoading && dataLength === 0 && <EmptyData icon={FolderKanban} />}
       {!isLoading && dataLength > 0 && children}
     </div>
