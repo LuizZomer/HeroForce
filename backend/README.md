@@ -1,99 +1,101 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🧩 Backend Architecture Overview
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este documento apresenta uma visão geral da arquitetura, padrões e bibliotecas utilizadas no backend deste projeto. O objetivo é fornecer uma referência clara para desenvolvedores que desejam entender ou contribuir com o código.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🏗️ Arquitetura
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+O projeto segue o **padrão modular e em camadas inspirado no Domain-Driven Design (DDD)**, implementado sobre o **framework NestJS**.  
+A estrutura é pensada para garantir **alta coesão**, **baixo acoplamento** e **facilidade de manutenção**.
 
-## Project setup
+### 🧱 Estrutura de Pastas
 
-```bash
-$ npm install
+```
+src/
+├── app.module.ts
+├── main.ts
+├── config/
+│   └── database/
+│       ├── database.config.ts
+│       ├── databse.module.ts
+│       └── seed/
+│           ├── data-source.ts
+│           └── data/
+├── core/
+│   ├── entities/
+│   └── object-value/
+├── modules/
+│   ├── auth/
+│   │   ├── domain/
+│   │   │   └── use-cases/
+│   │   ├── presentation/
+│   │   │   └── controllers/
+│   │   └── strategies/
+│   └── projects/
+│       ├── domains/
+│       │   └── use-cases/
+│       └── presentation/
+└── ...
 ```
 
-## Compile and run the project
+### 🧠 Conceitos-Chave
+
+- **Domain**: contém a lógica de negócio pura, expressa através de _use-cases_.
+- **Entities / Object Values**: representam objetos de domínio e enums imutáveis.
+- **Presentation Layer**: controla as rotas e recebe as requisições HTTP.
+- **Strategies (Auth)**: contém a lógica de autenticação via Passport (JWT e Local).
+- **Config Layer**: gerencia variáveis de ambiente, conexões e seeds do banco.
+- **Core**: núcleo com entidades reutilizáveis e regras globais.
+
+---
+
+## ⚙️ Tecnologias e Bibliotecas
+
+Principais dependências utilizadas:
+
+### 🧩 Produção
+
+- **@nestjs/typeorm & pg** – ORM e driver PostgreSQL.
+- **@nestjs/jwt, passport, passport-jwt, passport-local** – Autenticação e segurança.
+- **class-validator & class-transformer** – Validação e transformação de DTOs.
+- **helmet & cookie-parser** – Middleware de segurança e manipulação de cookies.
+- **@nestjs/swagger & swagger-ui-express** – Documentação da API.
+
+### 🧪 Desenvolvimento
+
+- **typescript, ts-node, ts-jest, jest, supertest** – Suporte a TypeScript e testes.
+- **eslint, prettier, eslint-config-prettier, eslint-plugin-prettier** – Padronização de código.
+- **@nestjs/cli, @swc/core, @swc/cli** – Compilação e scaffolding.
+
+---
+
+### 🧪 Rodar Testes
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run test
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## 🗄️ Banco de Dados
 
-# e2e tests
-$ npm run test:e2e
+O projeto utiliza **TypeORM** com **PostgreSQL**.  
+Os scripts de _seed_ estão em:
 
-# test coverage
-$ npm run test:cov
+```
+src/config/database/seed/
 ```
 
-## Deployment
+O arquivo `data-source.ts` define a configuração de conexão e inicialização dos dados.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 🔐 Autenticação
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+A autenticação utiliza **Passport** com duas estratégias:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+- **LocalStrategy** → autenticação via email/senha.
+- **JwtStrategy** → validação de tokens JWT nas rotas protegidas.
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## A assinatura e validação dos tokens estão centralizadas nos _use-cases_ de `auth/domain/use-cases`.
