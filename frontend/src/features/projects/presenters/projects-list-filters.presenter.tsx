@@ -1,4 +1,3 @@
-import { Button } from "@/shared/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -8,68 +7,59 @@ import {
 } from "@/shared/components/ui/select";
 import { IForSelectList } from "@/shared/types/for-select-list";
 import { statusOptions } from "../constants/status-project.constant";
-import { useState } from "react";
+import { Label } from "@/shared/components/ui/label";
+import { ValidateRole } from "@/shared/services/secure/ValidateRole";
 
 interface IProjectsListFiltersPresenterProps {
   responsibles: IForSelectList[];
   onFilter: (filter: { status?: string; responsibleId?: string }) => void;
-  isAdmin: boolean;
-  defaultValue: { status: string; responsibleId: string };
+  value: { status: string; responsibleId: string };
 }
 
 export const ProjectsListFiltersPresenter = ({
   responsibles,
   onFilter,
-  isAdmin,
-  defaultValue,
-}: IProjectsListFiltersPresenterProps) => {
-  const [status, setStatus] = useState(defaultValue.status || "");
-  const [responsibleId, setResponsibleId] = useState(
-    defaultValue.responsibleId || ""
-  );
+  value,
+}: IProjectsListFiltersPresenterProps) => (
+  <div className="grid grid-cols-3 gap-2">
+    <div className="w-full flex flex-col gap-2">
+      <Label>Status</Label>
+      <Select
+        value={value.status}
+        onValueChange={(val) => onFilter({ status: val })}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Selecione um status" />
+        </SelectTrigger>
+        <SelectContent>
+          {statusOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
 
-  return (
-    <div className="grid grid-cols-3 gap-2">
-      <div className="w-full">
-        <Select value={status} onValueChange={(val) => setStatus(val)}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Selecione um status" />
+    <ValidateRole>
+      <div className="w-full flex flex-col gap-2">
+        <Label>Responsável</Label>
+        <Select
+          value={value.responsibleId}
+          onValueChange={(val) => onFilter({ responsibleId: val })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Selecione um responsável" />
           </SelectTrigger>
           <SelectContent>
-            {statusOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
+            {responsibles.map((option) => (
+              <SelectItem key={option.value} value={String(option.value)}>
                 {option.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
-
-      {isAdmin && (
-        <div className="w-full">
-          <Select
-            value={responsibleId}
-            onValueChange={(val) => setResponsibleId(val)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione um responsável" />
-            </SelectTrigger>
-            <SelectContent>
-              {responsibles.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-
-      <div className="w-full">
-        <Button onClick={() => onFilter({ status, responsibleId })}>
-          Buscar
-        </Button>
-      </div>
-    </div>
-  );
-};
+    </ValidateRole>
+  </div>
+);

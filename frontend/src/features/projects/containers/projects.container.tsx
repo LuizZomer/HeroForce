@@ -2,7 +2,7 @@ import { PaginationAdapter } from "@/shared/components/pagination";
 import { Button } from "@/shared/components/ui/button";
 import { useAuth } from "@/shared/hooks/use-auth.hook";
 import { useResponsiblesForSelect } from "@/shared/hooks/use-responsible-for-select.hook";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CreateProjectDialog } from "../components/dialog/create-project.dialog";
 import { useFetchProjects } from "../hooks/use-fetch-projects.hook";
 import { ProjectHeaderPresenter } from "../presenters/project-header.presenter";
@@ -12,44 +12,59 @@ import { ProjectsRootPresenter } from "../presenters/projects-root.presenter";
 import { ValidateRole } from "@/shared/services/secure/ValidateRole";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProjectStatusEnum } from "@/shared/types/project-status.enum";
+import { IFindAllProjectsFilters } from "../requests/project/find-all-projects.request";
 
 export const ProjectsContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  // const location = useLocation();
-  const { user } = useAuth();
   const { signOut } = useAuth();
 
+  const [filters, setFilters] = useState<IFindAllProjectsFilters>({
+    status: (searchParams.get("status") as ProjectStatusEnum) || undefined,
+    responsibleId: searchParams.get("responsibleId")
+      ? Number(searchParams.get("responsibleId"))
+      : undefined,
+  });
+
   const page = Number(searchParams.get("page") || 1);
-  const status = searchParams.get("status") || undefined;
-  const responsibleId =
-    user?.role === "ADMIN"
-      ? searchParams.get("responsibleId") || undefined
-      : user?.id;
 
   const { data, isPending, refetch } = useFetchProjects({
     page,
-    status: status as ProjectStatusEnum,
-    responsibleId: responsibleId ? Number(responsibleId) : undefined,
+    status: filters.status,
+    responsibleId: filters.responsibleId,
   });
 
   const { data: responsiblesForSelect } = useResponsiblesForSelect();
 
-  const handleFilter = (filters: {
+  const handleFilter = (newFilter: {
     status?: string;
     responsibleId?: string;
   }) => {
+    const updatedFilters = {
+      ...filters,
+      ...newFilter,
+    };
+
     const newParams = new URLSearchParams(searchParams.toString());
-    if (filters.status) newParams.set("status", filters.status);
+
+    if (updatedFilters.status) newParams.set("status", updatedFilters.status);
     else newParams.delete("status");
 
-    if (filters.responsibleId)
-      newParams.set("responsibleId", filters.responsibleId);
+    if (updatedFilters.responsibleId)
+      newParams.set("responsibleId", String(updatedFilters.responsibleId));
     else newParams.delete("responsibleId");
 
     newParams.set("page", "1");
 
+    console.log("updatedFilters", updatedFilters);
+
     setSearchParams(newParams);
+    setFilters({
+      status: updatedFilters.status as ProjectStatusEnum,
+      responsibleId: updatedFilters.responsibleId
+        ? Number(updatedFilters.responsibleId)
+        : undefined,
+    });
   };
 
   const handlePageChange = (newPage: number) => {
@@ -96,10 +111,11 @@ export const ProjectsContainer = () => {
               <ProjectsListFiltersPresenter
                 responsibles={responsiblesForSelect || []}
                 onFilter={handleFilter}
-                isAdmin={user?.role === "ADMIN"}
-                defaultValue={{
-                  status: status || "",
-                  responsibleId: responsibleId ? String(responsibleId) : "",
+                value={{
+                  status: filters.status || "",
+                  responsibleId: filters.responsibleId
+                    ? String(filters.responsibleId)
+                    : "",
                 }}
               />
               <ValidateRole>
@@ -112,12 +128,12 @@ export const ProjectsContainer = () => {
         </ProjectHeaderPresenter>
       }
     >
-      <>
-        <div className="min-h-[calc(100vh-20rem)]">
+      <main>
+        <section className="min-h-[calc(100vh-20rem)]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <ProjectsListPresenter projects={data?.projects || []} />
           </div>
-        </div>
+        </section>
         <PaginationAdapter
           page={page}
           totalPages={data?.pagination.totalPages || 1}
@@ -125,7 +141,7 @@ export const ProjectsContainer = () => {
             handlePageChange(page);
           }}
         />
-      </>
+      </main>
     </ProjectsRootPresenter>
   );
 };

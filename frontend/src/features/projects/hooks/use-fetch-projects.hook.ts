@@ -8,12 +8,21 @@ import { useAuth } from "@/shared/hooks/use-auth.hook";
 export const useFetchProjects = (filters: FiltersWithPagination) => {
   const { user } = useAuth();
 
+  console.log("user", filters);
+
   return useQuery({
-    queryKey: ["projects", filters.page, user?.id],
+    queryKey: [
+      "projects",
+      filters.page,
+      user?.id,
+      filters.status,
+      filters.responsibleId,
+    ],
     queryFn: async () =>
       findAllProjectsRequest({
         ...filters,
-        responsibleId: user?.role === "ADMIN" ? undefined : user?.id,
+        responsibleId:
+          user?.role === "ADMIN" ? filters.responsibleId : user?.id,
       }),
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
