@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# Frontend Architecture Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🧱 Arquitetura e Padrão do Projeto
 
-Currently, two official plugins are available:
+O projeto segue uma **arquitetura modular baseada em features**, com cada domínio (ex: `auth`, `projects`, `register`) possuindo seus próprios diretórios de **containers**, **hooks**, **presenters** e **requests**.  
+Isso garante **alta coesão e baixo acoplamento**, facilitando a manutenção e escalabilidade do código.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Estrutura Geral
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+  features/
+    auth/
+      containers/ → componentes de página e orquestração de contexto
+      contexts/ → gerenciamento de estado e autenticação
+      hooks/ → lógica reutilizável
+      presenters/ → componentes de UI desacoplados
+      requests/ → requisições HTTP com axios
+    projects/
+      components/ → UI reutilizável (cards, dialogs, forms)
+      constants/ → enums e valores fixos
+      hooks/ → hooks específicos da feature
+      presenters/ → camadas visuais da listagem e cabeçalhos
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Padrão adotado: **Container-Presenter Pattern** + **Feature-Based Folder Structure**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚙️ Principais Tecnologias e Libs Utilizadas
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Dependências
+
+- **React** – Biblioteca base para construção da interface.
+- **@tanstack/react-query** – Controle de cache e estado de requisições assíncronas.
+- **Axios** – Cliente HTTP para consumo de APIs.
+- **Shadcn UI** – Componentes acessíveis e customizáveis.
+- **TailwindCSS** + **@tailwindcss/vite** – Estilização utilitária com integração otimizada ao Vite.
+- **Lucide React** – Ícones modernos baseados em SVG.
+- **React Hook Form + Zod** – Controle de formulários com validação eficiente.
+
+### Dependências de Desenvolvimento
+
+- **ESLint + @eslint/js** – Padronização de código e linting.
+- **Typescript** – Adiciona tipagem estática, melhorando a previsibilidade, autocompletar e segurança do código durante o desenvolvimento..
+
+## 🧭 Observações sobre o Frontend
+
+- Estrutura projetada para **escalabilidade e reuso** de componentes e lógica.
+- Uso consistente do **React Query** para controle de estado de dados de API.
+- Cada **feature** é isolada, evitando dependências cruzadas.
+- Formulários seguem padrão de **React Hook Form**, otimizando performance.
+- Uso extensivo de **Shadcn UI** e **TailwindCSS** garante **acessibilidade** e **design consistente**.
+- O projeto é **totalmente tipado** com **TypeScript**, aumentando a segurança e previsibilidade.
+
+---
+
+📅 Última atualização: 19/10/2025
