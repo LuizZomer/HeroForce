@@ -39,7 +39,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
           </div>
         </div>
         <CardDescription className="line-clamp-2">
-          {project.description}
+          {slideStringForTruncate(project.description, 70)}
         </CardDescription>
         <ValidateRole>
           <EditProjectDialog
