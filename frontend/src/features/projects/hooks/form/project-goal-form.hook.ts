@@ -5,14 +5,30 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-export const goalSchema = z.object({
-  id: z.number().optional(),
-  type: z.enum(ProjectGoalTypeEnum),
-  targetValue: z.string().min(1, "Meta de valor deve ser selecionada"),
-  currentValue: z.string().min(1, "Valor atual deve ser selecionado"),
-  deadline: z.string().min(1, "Prazo deve ser selecionado"),
-  achieved: z.boolean().optional(),
-});
+export const goalSchema = z
+  .object({
+    id: z.number().optional(),
+    type: z.enum(ProjectGoalTypeEnum),
+    targetValue: z.string().min(1, "Meta de valor deve ser selecionada"),
+    currentValue: z.string().min(1, "Valor atual deve ser selecionado"),
+    deadline: z.string().min(1, "Prazo deve ser selecionado"),
+    achieved: z.boolean().optional(),
+  })
+  .refine(
+    (data) => {
+      const deadlineDate = new Date(data.deadline);
+      const today = new Date();
+
+      deadlineDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
+      return deadlineDate >= today;
+    },
+    {
+      message: "O prazo não pode ser uma data anterior a hoje",
+      path: ["deadline"],
+    }
+  );
 
 export type IProjectGoalForm = z.infer<typeof goalSchema>;
 
