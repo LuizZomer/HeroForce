@@ -1,0 +1,73 @@
+# 🌐 Full Stack Project Overview
+
+Este projeto é composto por duas aplicações — um Frontend e um Backend — que funcionam em conjunto.
+
+O objetivo deste guia é ensinar como executar o projeto completo do zero em seu ambiente local.
+
+🧭 Para mais detalhes sobre o Frontend: [frontend/README.md](frontend/README.md)
+
+🧭 Para mais detalhes sobre o Backend: [backend/README.md](backend/README.md)
+
+## 🚀 Passo a Passo para Rodar o Projeto
+
+### 1️⃣ Clonar o Repositório
+
+```
+git clone https://github.com/LuizZomer/HeroForce.git
+cd HeroForce
+```
+
+### 2️⃣ Configurar .env do backend
+
+Acesse a pasta do backend e crie a .env com base na .env.example:
+
+```
+cd backend
+```
+
+### 3️⃣ Subir o Backend com Docker
+
+Inicie o container:
+
+```
+docker-compose up --build
+```
+
+Isso irá:
+
+- Criar o banco de dados PostgreSQL
+- Criar e rodar o container da API NestJS
+- Configurar a rede entre os serviços
+
+### 4️⃣ Rodar a Seed do Banco de Dados
+
+Com o container do backend em execução, abra outro terminal e rode:
+
+```
+npm run seed
+```
+
+💡 Esse comando popula o banco de dados com dados iniciais para facilitar os testes.
+
+### 5️⃣ Configurar .env do frontend 
+
+Agora vá até a pasta do frontend e crie a .env com base na .env.example:
+
+```
+cd ../frontend
+```
+
+### 6️⃣ Subir o Frontend com Docker
+
+Inicie o container:
+
+```
+docker-compose up --build
+```
+
+### Após seguir todos os passos:
+
+- O backend estará ativo com banco de dados configurado.
+- O frontend consumirá a API automaticamente.
+- O sistema estará disponível localmente, pronto para uso e desenvolvimento.
+
