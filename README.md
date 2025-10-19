@@ -106,10 +106,17 @@ docker-compose up --build
 
 ### Credenciais da seed
 
-#### Admin
+#### Admin (Pode fazer as operações de criar, editar e filtrar por responsável)
 - Email: admin@hero.com
 - Senha: admin123
 
-#### User padrão
+#### User padrão (Pode apenas visualizar as tarefas)
 - Email: player@hero.com
 - Senha: player123
+
+### Docs
+
+Você pode visualizar a documentação da api em lugares:
+
+- Swagger(Com a aplicação backend rodando): http://localhost:3000/api/docs
+- Postman: https://documenter.getpostman.com/view/34048515/2sB3QQK8K5
