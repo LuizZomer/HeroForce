@@ -19,7 +19,7 @@ cd HeroForce
 
 ### 2️⃣ Configurar .env do backend
 
-Acesse a pasta do backend e crie a .env com base na .env.example:
+Acesse a pasta do backend e crie a .env, caso esteja em desenvolvimento pode apenas copias a env.example para dentro da .env, já ser for em produção copie apenas as chaves e preencha com base na sua necessidade:
 
 ```
 cd backend
