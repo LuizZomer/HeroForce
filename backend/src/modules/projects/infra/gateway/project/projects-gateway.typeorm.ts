@@ -18,7 +18,7 @@ export class ProjectsGatewayTypeorm implements ProjectsGatewayInterface {
   ): Promise<[Project[], number]> {
     const [data, total] = await this.projectRepository.findAndCount({
       where,
-      relations: ['user'],
+      relations: ['user', 'goals'],
       skip: (page - 1) * limit,
       take: limit,
       order: { createdAt: 'DESC' },

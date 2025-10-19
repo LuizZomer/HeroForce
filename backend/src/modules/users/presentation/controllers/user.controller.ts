@@ -14,15 +14,14 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { Roles } from 'src/core/object-value/user-roles.enum';
+import { RolesAllowed } from 'src/shared/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { GlobalErrorInterface } from 'src/shared/types/interface/errors/global-error.interface';
+import { FindAllBySelectUserUseCase } from '../../domains/use-cases/user/find-all-by-select.use-case';
 import { RegisterUseCase } from '../../domains/use-cases/user/register.use-case';
 import { CreateUserDto } from '../dto/input/create-user.dto';
 import { RegisterResponseDto } from '../dto/output/register-response.dto';
-import { FindForSelectDocs } from 'src/shared/docs/find-for-select.docs';
-import { FindAllBySelectUserUseCase } from '../../domains/use-cases/user/find-all-by-select.use-case';
-import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/shared/guards/roles.guard';
-import { RolesAllowed } from 'src/shared/decorators/roles.decorator';
 
 @Controller('users')
 export class UserController {
@@ -57,10 +56,22 @@ export class UserController {
   @ApiOperation({ summary: 'Find all users' })
   @ApiOkResponse({
     description: 'Users found',
-    type: FindForSelectDocs,
-    isArray: true,
+
+    schema: {
+      example: {
+        statusCode: 200,
+        content: [
+          { id: 1, name: 'John Doe' },
+          { id: 2, name: 'Jane Doe' },
+        ],
+      },
+    },
   })
   async findAll() {
-    return this.findAllUsersUseCase.execute();
+    const usersForSelect = await this.findAllUsersUseCase.execute();
+    return {
+      statusCode: HttpStatus.OK,
+      content: usersForSelect,
+    };
   }
 }

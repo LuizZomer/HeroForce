@@ -1,6 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
+import { GoalType } from 'src/core/object-value/goal-type.enum';
 import { PaginationOutputDocs } from 'src/shared/docs/pagination.output';
+
+export class ProjectGoalDto {
+  @ApiProperty({ type: 'number', example: 1 })
+  @Expose()
+  id: number;
+
+  @ApiProperty({ type: 'number', example: 1 })
+  @Expose()
+  type: GoalType;
+
+  @ApiProperty({ type: 'number', example: 1000 })
+  @Expose()
+  targetValue: number;
+
+  @ApiProperty({ type: 'number', example: 500 })
+  @Expose()
+  currentValue: number;
+
+  @ApiProperty({ type: 'string', example: '2025-12-31T00:00:00.000Z' })
+  @Expose()
+  deadline: Date;
+
+  @ApiProperty({ type: 'boolean', example: false })
+  @Expose()
+  achieved: boolean;
+}
 
 export class UserDto {
   @ApiProperty({ type: 'number', example: 1 })
@@ -37,6 +64,11 @@ export class FindAllProjectsByDto {
   @Expose()
   @Type(() => UserDto)
   user: UserDto;
+
+  @ApiProperty({ type: ProjectGoalDto, isArray: true })
+  @Expose()
+  @Type(() => ProjectGoalDto)
+  goals: ProjectGoalDto[];
 }
 
 export class FindAllByWithpaginationDto {
