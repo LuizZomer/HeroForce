@@ -104,3 +104,12 @@ docker-compose up --build
 - O frontend consumirá a API automaticamente.
 - O sistema estará disponível localmente, pronto para uso e desenvolvimento.
 
+### Credenciais da seed
+
+#### Admin
+- Email: admin@hero.com
+- Senha: admin123
+
+#### User padrão
+- Email: player@hero.com
+- Senha: player123
