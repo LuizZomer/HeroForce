@@ -7,6 +7,7 @@ export interface IProjectGoal {
   targetValue: string;
   currentValue: string;
   deadline: string;
+  progress: number;
   achieved: boolean;
 }
 
@@ -16,6 +17,7 @@ export interface IProject {
   description: string;
   status: ProjectStatusEnum;
   createdAt: string;
+  totalProgress: number;
   user: {
     id: number;
     name: string;

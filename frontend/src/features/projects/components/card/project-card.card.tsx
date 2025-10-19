@@ -24,9 +24,14 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-lg">{project.name}</CardTitle>
-          <Badge className={statusColors[project.status]} variant="secondary">
-            {statusLabels[project.status]}
-          </Badge>
+          <div className="flex flex-col items-center gap-2">
+            <h2 className="font-semibold">
+              {project.totalProgress.toFixed(0)}%
+            </h2>
+            <Badge className={statusColors[project.status]} variant="secondary">
+              {statusLabels[project.status]}
+            </Badge>
+          </div>
         </div>
         <CardDescription className="line-clamp-2">
           {project.description}
@@ -82,12 +87,17 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
                             <EditProjectGoalDialog projectGoal={{ ...goal }} />
                           </ValidateRole>
                         </div>
-                        <Badge
-                          variant={goal.achieved ? "default" : "outline"}
-                          className="text-xs"
-                        >
-                          {goal.achieved ? "Atingida" : "Em andamento"}
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <h2 className="font-semibold">
+                            {goal.progress.toFixed(0)}%
+                          </h2>
+                          <Badge
+                            variant={goal.achieved ? "default" : "outline"}
+                            className="text-xs"
+                          >
+                            {goal.achieved ? "Atingida" : "Em andamento"}
+                          </Badge>
+                        </div>
                       </div>
                     ))}
                   </div>

@@ -24,6 +24,10 @@ export class ProjectGoalDto {
   @Expose()
   deadline: Date;
 
+  @ApiProperty({ type: 'number', example: 50 })
+  @Expose()
+  progress: number;
+
   @ApiProperty({ type: 'boolean', example: false })
   @Expose()
   achieved: boolean;
@@ -59,6 +63,10 @@ export class FindAllProjectsByDto {
   @ApiProperty({ type: 'string', example: '2025-10-17T00:00:00.000Z' })
   @Expose()
   createdAt: string;
+
+  @ApiProperty({ type: 'number', example: 75 })
+  @Expose()
+  totalProgress: number;
 
   @ApiProperty({ type: UserDto, example: { id: 1, name: 'User name' } })
   @Expose()

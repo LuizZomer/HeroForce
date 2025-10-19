@@ -13,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { formatMoney } from "@/shared/utils/money-format";
 import { goalTypeOptions } from "../../constants/goal-type.constant";
 import {
   IProjectGoalForm,
@@ -68,13 +67,7 @@ export const EditProjectGoalForm = ({
                 <FormItem>
                   <FormItem>Meta de valor</FormItem>
                   <FormControl>
-                    <Input
-                      {...field}
-                      onChange={(e) => {
-                        const value = formatMoney(e.target.value);
-                        field.onChange(value);
-                      }}
-                    />
+                    <Input {...field} type="number" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,13 +81,7 @@ export const EditProjectGoalForm = ({
                 <FormItem>
                   <FormItem>Valor atual</FormItem>
                   <FormControl>
-                    <Input
-                      {...field}
-                      onChange={(e) => {
-                        const value = formatMoney(e.target.value);
-                        field.onChange(value);
-                      }}
-                    />
+                    <Input {...field} type="number" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

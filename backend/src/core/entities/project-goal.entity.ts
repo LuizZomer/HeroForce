@@ -16,10 +16,10 @@ export class ProjectGoal {
   @Column({ name: 'type', type: 'enum', enum: GoalType })
   type: GoalType;
 
-  @Column({ name: 'target_value', type: 'numeric' })
+  @Column({ name: 'target_value', type: 'int' })
   targetValue: number;
 
-  @Column({ name: 'current_value', type: 'numeric', default: 0 })
+  @Column({ name: 'current_value', type: 'int', default: 0 })
   currentValue: number;
 
   @Column({ name: 'deadline', type: 'timestamp', nullable: true })

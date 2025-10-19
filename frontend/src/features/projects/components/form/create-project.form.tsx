@@ -20,7 +20,6 @@ import { useFieldArray } from "react-hook-form";
 import { goalTypeOptions } from "../../constants/goal-type.constant";
 import { Button } from "@/shared/components/ui/button";
 import { GoalType } from "@/shared/types/goal-type";
-import { formatMoney } from "@/shared/utils/money-format";
 import {
   IProjectForm,
   useProjectForm,
@@ -174,13 +173,7 @@ export const CreateProjectForm = ({
                   <FormItem>
                     <FormItem>Meta de valor</FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        onChange={(e) => {
-                          const value = formatMoney(e.target.value);
-                          field.onChange(value);
-                        }}
-                      />
+                      <Input {...field} type="number" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -194,13 +187,7 @@ export const CreateProjectForm = ({
                   <FormItem>
                     <FormItem>Valor atual</FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        onChange={(e) => {
-                          const value = formatMoney(e.target.value);
-                          field.onChange(value);
-                        }}
-                      />
+                      <Input {...field} type="number" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

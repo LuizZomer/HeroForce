@@ -89,8 +89,7 @@ export class ProjectController {
   }
 
   @Get()
-  @RolesAllowed(Roles.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Find all goals by project fields' })
   @ApiOkResponse({
     description: 'Goals found',

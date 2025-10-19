@@ -23,7 +23,9 @@ export const useProjectGoalForm = (defaultValues?: IProjectGoalForm) => {
       type: defaultValues?.type || GoalType.AGILITY,
       targetValue: defaultValues?.targetValue || "0",
       currentValue: defaultValues?.currentValue || "0",
-      deadline: formattedDateForInput(defaultValues?.deadline || ""),
+      deadline: defaultValues?.deadline
+        ? formattedDateForInput(defaultValues?.deadline)
+        : "",
       achieved: defaultValues?.achieved || false,
     },
   });
@@ -33,8 +35,8 @@ export const useProjectGoalForm = (defaultValues?: IProjectGoalForm) => {
       methods.reset({
         id: defaultValues.id,
         type: defaultValues.type,
-        targetValue: defaultValues.targetValue,
-        currentValue: defaultValues.currentValue,
+        targetValue: String(defaultValues.targetValue),
+        currentValue: String(defaultValues.currentValue),
         deadline: formattedDateForInput(defaultValues.deadline),
         achieved: defaultValues.achieved,
       });
