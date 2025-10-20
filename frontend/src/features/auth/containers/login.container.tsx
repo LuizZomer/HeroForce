@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import type { LoginSchema } from "../hooks/use-login.hook";
 import { LoginForm } from "../presenters/login-form.presenter";
 import { LoginPresenter } from "../presenters/login-root.presenter";
+import { toast } from "react-toastify";
 
 export const LoginContainer = () => {
   const { signIn } = useAuth();
@@ -17,7 +18,9 @@ export const LoginContainer = () => {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    await mutateAsync(data);
+    await mutateAsync(data).catch(() => {
+      toast.error("Email ou senha inválidos");
+    });
   };
 
   return (
