@@ -27,8 +27,9 @@ cd backend
 
 Considerações:
 
-- Se você colocar NODE_ENV como production ele não irá criar as tabelas automaticamente, a recomendação é ser development
-- Na .env.example tanto DB_HOST quanto DB_PORT já estão recomendando o padrão para conectar no container postgres
+- Se você colocar NODE_ENV como production ele não irá criar as tabelas automaticamente, a recomendação é ser development.
+- O projeto não precisa rodar migrations, com a NODE_ENV sendo development o typeorm cria as tabelas, colunas e relações por conta do synchronize.
+- Na .env.example as chaves já estão no padrão recomendado para conectar no container postgres, mas DB_USERNAME, DB_PASSWORD e DB_DATABASE podem ser alteradas conforme necessário.
 
 ### 3️⃣ Subir o Backend com Docker
 
